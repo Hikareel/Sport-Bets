@@ -86,4 +86,12 @@ public class OddsData {
         this.bookmakers = bookmakers;
     }
 
+    @Override
+    public String toString() {
+        return "<html>" +
+                "<h2>" + getSportTitle() + "</h2>" +
+                "</br>" +
+                "<p>" + getHomeTeam() + " vs " + getAwayTeam() + "</p>" +
+                "</html>";
+    }
 }

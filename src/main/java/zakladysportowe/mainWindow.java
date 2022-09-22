@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -19,10 +21,12 @@ public class mainWindow extends JFrame {
     private JButton oddsButton;
     private JPanel mainPanel;
     private JList dataList;
+    private JComboBox sportList;
     private ArrayList<String> odds;
     private DefaultListModel listOddsModel;
 
     private final String[] regions = {"eu", "uk", "us", "au"};
+    private final String[] sports = {"Brak"};
 
     mainWindow(){
         setContentPane(mainPanel);
@@ -38,16 +42,28 @@ public class mainWindow extends JFrame {
         for(String region : regions){
             regionList.addItem(region);
         }
+        for(String sport : sports){
+            sportList.addItem(sport);
+        }
         scoresButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                getApiDataForScores();
             }
         });
         oddsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 getApiDataForOdds();
+            }
+        });
+        dataList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                listReview listReview = new listReview((OddsData) dataList.getSelectedValue());
+                listReview.setTitle("Informacje o zakładzie");
+                listReview.pack();
+                listReview.setVisible(true);
             }
         });
     }
@@ -61,7 +77,6 @@ public class mainWindow extends JFrame {
         URL url = null;
         InputStreamReader reader = null;
         OddsData[] data = null;
-        String html = "";
         try {
             String baseUrl = "https://odds.p.rapidapi.com/v4/sports/upcoming/odds";
             baseUrl += "?regions=" + Objects.requireNonNull(regionList.getSelectedItem());
@@ -81,14 +96,35 @@ public class mainWindow extends JFrame {
         }
 
         for(OddsData odd: data){
-            html = "<html>" +
-                    "<h2>" + odd.getSportTitle() + "</h2>" +
-                    "</br>" +
-                    "<p>" + odd.getHomeTeam() + " vs " + odd.getAwayTeam() + "</p>" +
-                    "</html>";
-            listOddsModel.addElement(html);
+            listOddsModel.addElement(odd);
         }
     }
 
+    public void getApiDataForScores() {
+        listOddsModel.removeAllElements();
+        URL url = null;
+        InputStreamReader reader = null;
+        OddsData[] data = null;
+        try {
+            String baseUrl = "https://odds.p.rapidapi.com/v4/sports/";
+            baseUrl += "?regions=" + Objects.requireNonNull(regionList.getSelectedItem());
+            baseUrl += "/scores";
+            baseUrl += "&rapidapi-key=2e9ffbfc24mshae7601f99e4bbbep197854jsn060dd4f2c6d5";
+            url = new URL(baseUrl);
 
+        } catch(MalformedURLException e){
+            e.printStackTrace();
+        }
+
+        try{
+            reader = new InputStreamReader(url.openStream());
+            data = new Gson().fromJson(reader, OddsData[].class);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        for(OddsData odd: data){
+            listOddsModel.addElement(odd);
+        }
+    }
 }
