@@ -22,6 +22,7 @@ public class mainWindow extends JFrame {
     private JPanel mainPanel;
     private JList dataList;
     private JComboBox sportList;
+    private JButton favouritesButton;
     private ArrayList<String> odds;
     private DefaultListModel listOddsModel;
 
@@ -60,10 +61,19 @@ public class mainWindow extends JFrame {
         dataList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                listReview listReview = new listReview((OddsData) dataList.getSelectedValue());
+                listReview listReview = new listReview((OddsData) dataList.getSelectedValue(), "", "", "");
                 listReview.setTitle("Informacje o zakładzie");
                 listReview.pack();
                 listReview.setVisible(true);
+            }
+        });
+        favouritesButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                favouriteOdds favourites = new favouriteOdds();
+                favourites.setTitle("Favourites");
+                favourites.setSize(400, 400 );
+                favourites.setVisible(true);
             }
         });
     }

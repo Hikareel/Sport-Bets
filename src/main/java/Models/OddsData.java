@@ -30,6 +30,34 @@ public class OddsData {
     @Expose
     private List<Bookmaker> bookmakers = null;
 
+    private String home_odd;
+    private String away_odd;
+    private String db_id = "-1";
+
+    public String getDb_id() {
+        return db_id;
+    }
+
+    public void setDb_id(String db_id) {
+        this.db_id = db_id;
+    }
+
+    public void setHome_odd(String home_odd) {
+        this.home_odd = home_odd;
+    }
+
+    public void setAway_odd(String away_odd) {
+        this.away_odd = away_odd;
+    }
+
+    public String getHome_odd() {
+        return home_odd;
+    }
+
+    public String getAway_odd() {
+        return away_odd;
+    }
+
     public String getId() {
         return id;
     }
