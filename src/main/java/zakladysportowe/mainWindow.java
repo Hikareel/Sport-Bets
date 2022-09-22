@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class mainWindow extends JFrame {
-
     private JComboBox regionList;
     private JButton scoresButton;
     private JButton oddsButton;
@@ -27,9 +26,10 @@ public class mainWindow extends JFrame {
 
     mainWindow(){
         setContentPane(mainPanel);
+        pack();
+        setSize(700, 600 );
         setTitle("Zakłady Sportowe");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        pack();
         setVisible(true);
         odds = new ArrayList<String>();
         listOddsModel = new DefaultListModel();
@@ -58,7 +58,6 @@ public class mainWindow extends JFrame {
 
     public void getApiDataForOdds(){
         listOddsModel.removeAllElements();
-        System.out.println(listOddsModel.isEmpty());
         URL url = null;
         InputStreamReader reader = null;
         OddsData[] data = null;
@@ -88,11 +87,7 @@ public class mainWindow extends JFrame {
                     "<p>" + odd.getHomeTeam() + " vs " + odd.getAwayTeam() + "</p>" +
                     "</html>";
             listOddsModel.addElement(html);
-            System.out.println(html);
         }
-        //dataList.setModel(listOddsModel);
-
-        //System.out.println(html);
     }
 
 
