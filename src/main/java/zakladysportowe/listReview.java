@@ -45,15 +45,15 @@ public class listReview extends JDialog {
                 public void run() {
                     CountOdds count = new CountOdds(odd);
                     count.countOdds();
-                    oddHomeTeam.setText("Kurs: " + String.format("%.2g%n", count.homeTeamOdds));
-                    oddAwayTeam.setText("Kurs: " + String.format("%.2g%n", count.awayTeamOdds));
+                    oddHomeTeam.setText("Odd: " + String.format("%.2g%n", count.homeTeamOdds));
+                    oddAwayTeam.setText("Odd: " + String.format("%.2g%n", count.awayTeamOdds));
 
                 }
             });
             countHomeTeamOdds.start();
         } else{
-            oddHomeTeam.setText("Kurs: " + home_odd);
-            oddAwayTeam.setText("Kurs: " + away_odd);
+            oddHomeTeam.setText("Odd: " + home_odd);
+            oddAwayTeam.setText("Odd: " + away_odd);
         }
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -66,7 +66,7 @@ public class listReview extends JDialog {
                 if(isFavourited()) {
                     DatabaseConnection conn = new DatabaseConnection();
                     conn.connect();
-                    String query = "DELETE FROM favourites WHERE id = " + odd.getDb_id();
+                    String query = "DELETE FROM favourites WHERE id = " + Integer.parseInt(odd.getDb_id());
                     Statement statement = null;
                     try {
                         statement = conn.db.createStatement();
